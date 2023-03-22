@@ -15,5 +15,5 @@ public class MainActivity extends AppCompatActivity {
     //Test Comment via my Commit ~Thomson Ly
     //Test Commit2 ~Thomson Ly !!
 
-
+    //Commit by Aleksandar
 }
