@@ -1,21 +1,15 @@
 package com.example.finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.HandlerCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,8 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sp;
     SharedPreferences.Editor spe;
-
-    //Doing SharedPreference to remember the previous Username (From Week5 SharedPreference)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         rememberCheck = findViewById(R.id.checkBox);
         createUserBtn = findViewById(R.id.createNewUserBtn);
 
-        spLoadData(); //For loading the data when the checkbox is checked
+        spLoadData();
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,13 +46,20 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Please enter a valid password", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    intent_course.putExtra("username", username); //sending over the username to the second activity
-                    intent_course.putExtra("password", password); //sending over the password to the second activity
+                    intent_course.putExtra("username", username);
+                    intent_course.putExtra("password", password);
                     startActivity(intent_course);
                 }
             }
         });
 
+        createUserBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_create_user = new Intent(MainActivity.this, CreateUserActivity.class);
+                startActivity(intent_create_user);
+            }
+        });
 
     }
 
@@ -71,17 +70,17 @@ public class MainActivity extends AppCompatActivity {
             spSaveData();
         }
         else {
-            spRemoveData(); //make sure the fields aren't remembered on next startup
+            spRemoveData();
         }
     }
 
     public void spSaveData(){
-        sp = getPreferences(MODE_PRIVATE); //Whatever data we want to store, we will be keeping it private in the app
+        sp = getPreferences(MODE_PRIVATE);
         spe = sp.edit();
         spe.putString("key_username", etUsername.getText().toString());
         spe.putString("key_pass", etPassword.getText().toString());
         spe.putBoolean("key_rem", rememberCheck.isChecked());
-        spe.commit(); //NEED THIS, otherwise data not applied/saved
+        spe.commit();
     }
 
     public void spLoadData(){
