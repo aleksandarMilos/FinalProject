@@ -6,37 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".SecondActivityCourse">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addCourseBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/baseline_add_24"
-        />
-
     <TextView
         android:id="@+id/newCourseTextView"
-        android:layout_width="178dp"
-        android:layout_height="35dp"
+        android:layout_width="83dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="56dp"
         android:gravity="center"
-        android:text="Add a New Course"
-        android:textSize="20dp"
+        android:text="Add Course"
+        android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/addCourseBtn" />
 
+    <TextView
+        android:id="@+id/deleteSwitchTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginBottom="56dp"
+        android:text="Delete Course on Tap"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/newCourseTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteY="526dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addCourseBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/LightGreen"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/baseline_add_24" />
+
     <ListView
         android:id="@+id/listViewData"
-        android:layout_width="372dp"
-        android:layout_height="510dp"
+        android:layout_width="364dp"
+        android:layout_height="475dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/addCourseBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,9 +60,32 @@
         android:id="@+id/displayCurrentUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="15dp"
+        android:layout_marginEnd="7dp"
+        android:shadowColor="#FFFFFF"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/signoutBtn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signoutBtn"
+        android:layout_width="84dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="4dp"
+        android:text="Signout"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Switch
+        android:id="@+id/deleteSwitch"
+        android:layout_width="51dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="148dp"
+        android:layout_marginBottom="50dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/deleteSwitchTextView" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

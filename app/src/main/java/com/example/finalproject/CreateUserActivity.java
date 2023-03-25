@@ -23,6 +23,10 @@ public class CreateUserActivity extends AppCompatActivity {
         usernameEditText = findViewById(R.id.user_Name);
         passwordEditText = findViewById(R.id.user_Password);
 
+        //TODO Maybe we we have to passwordEditText, so that the user has to enter the same password twice, like most create account things on websites, app etc.
+        //E.g. basically just a couple of extra lines, where one of them will be (passwordEditText1.getText().toString() == passwordEditText2.getText().toString())
+
+
         // Set up the button to create the user account
         Button createAccountButton = findViewById(R.id.buttonCreate);
         createAccountButton.setOnClickListener(new View.OnClickListener() {
@@ -40,7 +44,8 @@ public class CreateUserActivity extends AppCompatActivity {
                     Toast.makeText(CreateUserActivity.this, "User account created successfully!", Toast.LENGTH_SHORT).show();
 
                     // Start the MainActivity
-                    Intent intent = new Intent(CreateUserActivity.this, MainActivity.class);
+                    Intent intent = new Intent(CreateUserActivity.this, MainActivity.class); //TODO (Thomson) What I'm thinking is probably linking this directly to the SecondActivityCourse right after you press create
+                    //TODO Also maybe we'll have an exit button (say they don't want to actually create an account) and this'll redirect you back to the MainActivity login page
                     startActivity(intent);
                     finish();
                 } else {

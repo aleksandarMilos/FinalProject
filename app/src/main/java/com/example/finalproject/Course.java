@@ -7,27 +7,16 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "Course_table")
 public class Course {
 
-    //Main things to keep track of is Username, password, CourseNum, and CourseName
-    @PrimaryKey(autoGenerate = true) //TODO when I figure this out later, the PrimaryKey here should most likely be Username, and similarly, the Password should be a Candidate key
+    //Main things to keep track of in this table is the CourseNum and CourseName
+    @PrimaryKey(autoGenerate = true) //TODO Maybe this primary key will be CourseNum?
     @ColumnInfo(name = "id")
     private int _id;
 
+    //TODO Probably need to include Username as a FOREIGN Key, this is how we'll correlate specific Username to their added courses
     public int get_id() {
         return _id;
     }
     public void set_id(int _id) { this._id = _id; }
-
-    @ColumnInfo(name = "Username")
-    private String username;
-
-    public String getUsername() { return this.username; }
-    public void setUsername(String username) { this.username = username; }
-
-    @ColumnInfo(name = "Password")
-    private String password;
-
-    public String getPassword() { return this.password; }
-    public void setPassword(String password) { this.password = password; }
 
     @ColumnInfo(name = "CourseNum") //Example in the format COMP3150 hence a string
     private String courseNum;

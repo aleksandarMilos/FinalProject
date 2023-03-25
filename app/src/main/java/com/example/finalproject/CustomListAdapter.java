@@ -64,7 +64,7 @@ public class CustomListAdapter extends BaseAdapter {
         }
 
         void bindData(Course course) {
-            label.setText(course.getUsername() + " ---- "  + course.getPassword()); //TODO This should output courseNum and courseName
+            //label.setText(course.getUsername() + " ---- "  + course.getPassword()); //TODO This should output courseNum and courseName
         }
     }
 

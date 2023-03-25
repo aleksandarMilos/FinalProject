@@ -31,7 +31,24 @@ public class MainActivity extends AppCompatActivity {
         rememberCheck = findViewById(R.id.checkBox);
         createUserBtn = findViewById(R.id.createNewUserBtn);
 
-        spLoadData();
+        spLoadData(); //Loading the shared-preferences which keeps track of our Username/password
+
+        //--------------------------------------------------------------------------------------
+        Intent fromSecondActivity = getIntent();
+        boolean signedOut = false;
+        boolean invalidUserPass = false;
+
+        //Signed out Toast message
+        signedOut = fromSecondActivity.getBooleanExtra("signout", false);
+        if (signedOut == true){
+            Toast.makeText(this, "Successfully signed out!", Toast.LENGTH_SHORT).show();
+        }
+
+        invalidUserPass = fromSecondActivity.getBooleanExtra("invalidUserPass", false);
+        if (invalidUserPass == true){
+            Toast.makeText(this, "Invalid Username/Password! Please Try again.", Toast.LENGTH_SHORT).show();
+        }
+        //--------------------------------------------------------------------------------------
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     intent_course.putExtra("username", username);
                     intent_course.putExtra("password", password);
+                    intent_course.putExtra("vialogin", true);
                     startActivity(intent_course);
                 }
             }
