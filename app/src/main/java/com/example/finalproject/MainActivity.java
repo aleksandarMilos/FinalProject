@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
     SharedPreferences.Editor spe;
 
+    boolean signedIn = false; //Variable used with sharedpreferences to keep track if the user has previously SignedIn (without signingout)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         spLoadData(); //Loading the shared-preferences which keeps track of our Username/password
 
+        //TODO or possibly future work if too hard: Automatically logging the user out after a set amount of time the next time they open the app, e.g. 24 hours or a week
+
         //--------------------------------------------------------------------------------------
         Intent fromSecondActivity = getIntent();
         boolean signedOut = false;
@@ -42,13 +46,18 @@ public class MainActivity extends AppCompatActivity {
         signedOut = fromSecondActivity.getBooleanExtra("signout", false);
         if (signedOut == true){
             Toast.makeText(this, "Successfully signed out!", Toast.LENGTH_SHORT).show();
+            spRemoveSigninData(); //clearing SignIn data just in case (aka signedIn = false)
         }
 
+        //Login Attempt error message for Invalid Username/Password
         invalidUserPass = fromSecondActivity.getBooleanExtra("invalidUserPass", false);
         if (invalidUserPass == true){
             Toast.makeText(this, "Invalid Username/Password! Please Try again.", Toast.LENGTH_SHORT).show();
+            spRemoveSigninData(); //clearing SignIn data just in case (aka signedIn = false)
         }
+        spLoadSigninData(); //Loading to see if the User has previously signed in
         //--------------------------------------------------------------------------------------
+
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     intent_course.putExtra("username", username);
                     intent_course.putExtra("password", password);
                     intent_course.putExtra("vialogin", true);
+                    spSaveSigninData();
                     startActivity(intent_course);
                 }
             }
@@ -116,5 +126,33 @@ public class MainActivity extends AppCompatActivity {
         spe.remove("key_rem");
         spe.commit();
     }
+
+    //--------------------------------------------------------------------------------------
+    //For remembering previously signed in functionality
+    public void spSaveSigninData(){
+        sp = getPreferences(MODE_PRIVATE);
+        spe = sp.edit();
+        spe.putBoolean("signedIn", true);
+        spe.commit();
+    }
+    public void spRemoveSigninData(){
+        sp = getPreferences(MODE_PRIVATE);
+        spe = sp.edit();
+        spe.putBoolean("signedIn", false);
+        spe.commit();
+    }
+    public void spLoadSigninData(){
+        sp = getPreferences(MODE_PRIVATE);
+        signedIn = sp.getBoolean("signedIn", false);
+        if (signedIn == true){ //If SignedIn previously (but never signed out), then we can go to SecondActivity right away
+            Intent intent_course = new Intent(MainActivity.this, SecondActivityCourse.class);
+            intent_course.putExtra("username", sp.getString("key_username", null));
+            intent_course.putExtra("password", sp.getString("key_pass",null));
+            intent_course.putExtra("vialogin", true);
+            spSaveSigninData();
+            startActivity(intent_course);
+        }
+    }
+    //--------------------------------------------------------------------------------------
 
 }
