@@ -54,17 +54,18 @@ public class SecondActivityCourse extends AppCompatActivity {
         dbUserPass = Room.databaseBuilder(getApplicationContext(), MyDatabase.class, "UserPass_db").fallbackToDestructiveMigration().build(); //Building the database once
         dbCourse = Room.databaseBuilder(getApplicationContext(), MyDatabase.class, "Course_db").fallbackToDestructiveMigration().build();
 
-        //Retrieving Username and password from first activity
-        Intent intent_fromMain = getIntent();
-        String username = intent_fromMain.getStringExtra("username");
-        String password = intent_fromMain.getStringExtra("password");
-        boolean viaLogin = intent_fromMain.getBooleanExtra("vialogin", false);
+        //Retrieving Username and password from first activity or Retrieving it from Create user
+        Intent intent_fromElsewhere = getIntent();
+        String username = intent_fromElsewhere.getStringExtra("username");
+        String password = intent_fromElsewhere.getStringExtra("password");
+        boolean viaLogin = intent_fromElsewhere.getBooleanExtra("vialogin", false);
+        boolean viaCreateUser = intent_fromElsewhere.getBooleanExtra("viaCreateUser", false);
 
-        //Intents
+        //Intents towards MainActivity
         Intent intent_toMain = new Intent(SecondActivityCourse.this, MainActivity.class);
 
         //--------------------------------------------------------------------------------------
-        //This code is to check for existing user. Note we only want to do this if they clicked it via the login button. If not, then only other way is they came from create user activity
+        //This code is to check for existing user. Note we only want to do this if they clicked it via the login button.
         if (viaLogin == true){
             executorService.execute(new Runnable() {
                 @Override
@@ -85,8 +86,31 @@ public class SecondActivityCourse extends AppCompatActivity {
                 }
             });
         }
-        else{
-            saveUserPassData(username, password);
+        //--------------------------------------------------------------------------------------
+
+        //--------------------------------------------------------------------------------------
+        //Code for if we came from CreateUser, we want to add this new user to the database
+        Intent intent_toCreate = new Intent(SecondActivityCourse.this, CreateUserActivity.class);
+        if (viaCreateUser == true){
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    boolean existUser = dbUserPass.userPassDAO().checkUser(username); //Only have to check if User already exists in our database
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Also have to check if the Newly Created User already exists
+                            if (existUser == false){ //Only want to Create new User if they don't exist already
+                                saveUserPassData(username, password); //this creates the new account in the database
+                            }
+                            else{
+                                intent_toCreate.putExtra("existingUser", true);
+                                startActivity(intent_toCreate);
+                            }
+                        }
+                    });
+                }
+            });
         }
         //--------------------------------------------------------------------------------------
 
@@ -137,10 +161,10 @@ public class SecondActivityCourse extends AppCompatActivity {
                     @Override
                     public void run() {
                         if(l>0){ //means some row has been changed/modified
-                            Toast.makeText(SecondActivityCourse.this, "The UserPass has been inserted!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SecondActivityCourse.this, "New User " + username + " Created!", Toast.LENGTH_SHORT).show();
                         }
                         else{ //Not inserted/failed
-                            Toast.makeText(SecondActivityCourse.this, "The UserPass have not been saved.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SecondActivityCourse.this, "New User has not been created...", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

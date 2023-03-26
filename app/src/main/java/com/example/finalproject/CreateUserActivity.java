@@ -24,8 +24,16 @@ public class CreateUserActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.user_Password);
 
         //TODO Maybe we we have to passwordEditText, so that the user has to enter the same password twice, like most create account things on websites, app etc.
-        //E.g. basically just a couple of extra lines, where one of them will be (passwordEditText1.getText().toString() == passwordEditText2.getText().toString())
+        // E.g. basically just a couple of extra lines, where one of them will be (passwordEditText1.getText().toString() == passwordEditText2.getText().toString())
 
+        //TODO Maybe we'll have an exit button (say they don't want to actually create an account) and this'll redirect you back to the MainActivity login page
+
+        //This is if they failed to create a new user (aka the User with that Username already exists)
+        Intent intent_fromSecond = getIntent();
+        boolean existingUser = intent_fromSecond.getBooleanExtra("existingUser", false);
+        if (existingUser == true){
+            Toast.makeText(this, "User already Exists! Please try again.", Toast.LENGTH_SHORT).show();
+        }
 
         // Set up the button to create the user account
         Button createAccountButton = findViewById(R.id.buttonCreate);
@@ -40,12 +48,11 @@ public class CreateUserActivity extends AppCompatActivity {
                     // Save the username and password to the SharedPreferences
                     saveCredentials(username, password);
 
-                    // Show a success message
-                    Toast.makeText(CreateUserActivity.this, "User account created successfully!", Toast.LENGTH_SHORT).show();
-
-                    // Start the MainActivity
-                    Intent intent = new Intent(CreateUserActivity.this, MainActivity.class); //TODO (Thomson) What I'm thinking is probably linking this directly to the SecondActivityCourse right after you press create
-                    //TODO Also maybe we'll have an exit button (say they don't want to actually create an account) and this'll redirect you back to the MainActivity login page
+                    // After creating the user account, we go directly to the SecondActivity
+                    Intent intent = new Intent(CreateUserActivity.this, SecondActivityCourse.class);
+                    intent.putExtra("username", username);
+                    intent.putExtra("password", password);
+                    intent.putExtra("viaCreateUser", true);
                     startActivity(intent);
                     finish();
                 } else {
