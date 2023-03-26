@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             spRemoveData();
+            spRemoveSigninData();
         }
     }
 

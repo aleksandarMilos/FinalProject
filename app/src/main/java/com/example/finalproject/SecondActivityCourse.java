@@ -66,6 +66,7 @@ public class SecondActivityCourse extends AppCompatActivity {
 
         //--------------------------------------------------------------------------------------
         //This code is to check for existing user. Note we only want to do this if they clicked it via the login button.
+        //Also currently everything IS case sensitive.
         if (viaLogin == true){
             executorService.execute(new Runnable() {
                 @Override
@@ -130,7 +131,13 @@ public class SecondActivityCourse extends AppCompatActivity {
 
         //TODO Cleanup the SecondActivityCourse xml UI design (Sorry guys I really suck at it LOL)
 
-        //TODO Maybe have a check password thing?
+        //TODO Maybe have a check password thing, so that user if they forgot their password, can check it via the app idk?
+
+        //TODO Figure out database functionality across multiple activities. This is useful for when we link the Calendar and everything together, however at the moment, I just do the bruteforce way
+        // where I simply send everything I want to save in a Database to this SecondActivity.Course
+
+        //TODO Possible idea: Another button to display only the CourseNum or only the CourseName
+        //TODO Probably add a "settings" button on this Activity. But yeah we'll have to fix up the UI if we want to implement more buttons/functionality
 
 
         //--------------------------------------------------------------------------------------
@@ -172,6 +179,7 @@ public class SecondActivityCourse extends AppCompatActivity {
         });
     }
 
+    //TODO This part is for showing the Courses and shit, but we haven't done that yet
 //    public void showData(){ //showData(View view)
 //        executorService.execute(new Runnable() {
 //            //ArrayList<String> stringArray = new ArrayList<>(); //needed to give this to the adapter, along with context

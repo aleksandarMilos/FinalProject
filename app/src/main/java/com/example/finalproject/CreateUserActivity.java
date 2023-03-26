@@ -27,6 +27,7 @@ public class CreateUserActivity extends AppCompatActivity {
         // E.g. basically just a couple of extra lines, where one of them will be (passwordEditText1.getText().toString() == passwordEditText2.getText().toString())
 
         //TODO Maybe we'll have an exit button (say they don't want to actually create an account) and this'll redirect you back to the MainActivity login page
+        // Probably don't need this, as I think Android user's nowadays are used to swiping back if they want to exit or go back from a specific part of the app
 
         //This is if they failed to create a new user (aka the User with that Username already exists)
         Intent intent_fromSecond = getIntent();
@@ -57,6 +58,8 @@ public class CreateUserActivity extends AppCompatActivity {
                     finish();
                 } else {
                     // Show an error message
+                    //TODO ~Thomson, I see that you specified the length to be at least 8. Maybe we do a specialized message so that the User knows it has to be of length 8
+                    // Or display it somewhere on the UI
                     Toast.makeText(CreateUserActivity.this, "Invalid username or password. Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
