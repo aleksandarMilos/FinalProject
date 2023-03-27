@@ -22,7 +22,7 @@ public interface UserPassDAO {
     @Query("SELECT CASE WHEN EXISTS(SELECT * FROM UserPass_table WHERE username == :username AND password == :password) THEN CAST (1 AS BIT) ELSE CAST (0 AS BIT) END") //Seems to work correctly!
     boolean checkUserPass(String username, String password);
 
-    @Query("SELECT CASE WHEN EXISTS(SELECT * FROM UserPass_table WHERE username == :username) THEN CAST (1 AS BIT) ELSE CAST (0 AS BIT) END") //This query is for when we create a User
+    @Query("SELECT CASE WHEN EXISTS(SELECT * FROM UserPass_table WHERE username == :username) THEN CAST (1 AS BIT) ELSE CAST (0 AS BIT) END") //This query is for when we create a User, checks if User already exists
     boolean checkUser(String username);
 
     @Update
