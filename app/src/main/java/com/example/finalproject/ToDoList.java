@@ -44,7 +44,7 @@ public class ToDoList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.todolist);
 
         titleInput = findViewById(R.id.title_input);
         descriptionInput = findViewById(R.id.description_input);
@@ -74,7 +74,7 @@ public class ToDoList extends AppCompatActivity {
                     dateInput.setText("");
                     timeInput.setText("");
                 } else {
-                    Toast.makeText(MainActivity.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ToDoList.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -92,7 +92,7 @@ public class ToDoList extends AppCompatActivity {
                 LocalDate date = dateString.isEmpty() ? LocalDate.now() : LocalDate.parse(dateString);
 
                 // Create a DatePickerDialog and show it
-                DatePickerDialog datePicker = new DatePickerDialog(MainActivity.this,
+                DatePickerDialog datePicker = new DatePickerDialog(ToDoList.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
@@ -113,7 +113,7 @@ public class ToDoList extends AppCompatActivity {
                 LocalTime time = timeString.isEmpty() ? LocalTime.now() : LocalTime.parse(timeString);
 
                 // Create a TimePickerDialog and show it
-                TimePickerDialog timePicker = new TimePickerDialog(MainActivity.this,
+                TimePickerDialog timePicker = new TimePickerDialog(ToDoList.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
