@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".SecondActivityCourse">
 
     <TextView
@@ -15,6 +16,7 @@
         android:gravity="center"
         android:text="Add Course"
         android:textSize="15dp"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/addCourseBtn" />
@@ -27,6 +29,7 @@
         android:layout_marginBottom="56dp"
         android:text="Delete Course on Tap"
         android:textSize="15dp"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/newCourseTextView"
         app:layout_constraintBottom_toBottomOf="parent"
