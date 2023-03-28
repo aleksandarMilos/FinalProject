@@ -2,13 +2,17 @@ package com.example.finalproject;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity; //We imported this
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Course_table")
+@Entity(tableName = "Course_table", foreignKeys = {@ForeignKey(entity = UserPass.class,
+        parentColumns = "Username",
+        childColumns = "uName",
+        onDelete = ForeignKey.CASCADE)}) //Foreign key is the Username because we want each unique user to have their own courses that they added to showup for them
 public class Course {
 
-    //Main things to keep track of is Username, password, CourseNum, and CourseName
-    @PrimaryKey(autoGenerate = true) //TODO when I figure this out later, the PrimaryKey here should most likely be Username, and similarly, the Password should be a Candidate key
+    //Main things to keep track of in this table is the CourseNum and CourseName
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int _id;
 
@@ -17,31 +21,16 @@ public class Course {
     }
     public void set_id(int _id) { this._id = _id; }
 
-    @ColumnInfo(name = "Username")
-    private String username;
+    @ColumnInfo(name = "Course")
+    private String course;
 
-    public String getUsername() { return this.username; }
-    public void setUsername(String username) { this.username = username; }
+    public String getCourse() { return this.course; }
+    public void setCourse(String course) { this.course = course; }
 
-    @ColumnInfo(name = "Password")
-    private String password;
+    @ColumnInfo(name = "uName")
+    public String uName;
 
-    public String getPassword() { return this.password; }
-    public void setPassword(String password) { this.password = password; }
-
-    @ColumnInfo(name = "CourseNum") //Example in the format COMP3150 hence a string
-    private String courseNum;
-
-    public String getCourseNum() { return this.courseNum; }
-    public void setCourseNum(String courseNum) { this.courseNum = courseNum; }
-
-    @ColumnInfo(name = "CourseName")
-    private String courseName;
-
-    public String getCourseName() { return this.courseName; }
-    public void setCourseName(String courseName) { this.courseName = courseName; }
-
-
-
+    public String getuName() { return this.uName; }
+    public void setuName(String uName) { this.uName = uName; }
 
 }
