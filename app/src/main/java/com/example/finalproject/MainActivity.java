@@ -2,6 +2,7 @@ package com.example.finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     boolean signedIn = false; //Variable used with sharedpreferences to keep track if the user has previously SignedIn (without signingout)
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.user_Password);
         rememberCheck = findViewById(R.id.checkBox);
         createUserBtn = findViewById(R.id.createNewUserBtn);
+
 
         spLoadData(); //Loading the shared-preferences which keeps track of our Username/password
 
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent_create_user);
             }
         });
+
 
     }
 

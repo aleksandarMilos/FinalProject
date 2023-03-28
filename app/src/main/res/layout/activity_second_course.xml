@@ -89,5 +89,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/deleteSwitchTextView" />
 
+    <Button
+        android:id="@+id/calculator"
+        android:layout_width="206dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/Chartreuse"
+        android:fadingEdge="horizontal|vertical"
+        android:paddingHorizontal="3dp"
+        android:text="grade calculator"
+        app:layout_constraintStart_toEndOf="@+id/addCourseBtn"
+        app:layout_constraintTop_toBottomOf="@+id/newCourseTextView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

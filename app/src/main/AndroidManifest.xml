@@ -11,29 +11,28 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
+            android:name=".GradeCalc"
+            android:exported="false" />
+        <activity
             android:name=".SecondActivityCourse"
             android:exported="false" />
         <activity
-            android:label="Smart Link"
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="Smart Link">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:label="Create a New User"
             android:name=".CreateUserActivity"
-            />
+            android:label="Create a New User" />
         <activity
-            android:label="Todo List"
             android:name=".ToDoList"
             android:exported="true"
-            />
-
-
+            android:label="Todo List" />
     </application>
 
 </manifest>

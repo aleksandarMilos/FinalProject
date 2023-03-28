@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
+    tools:context=".GradeCalc">
+
+    <TextView
+        android:id="@+id/grade_prompt"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="14dp"
+        android:text="Enter a grade and its weight (with 2 decimal points)"
+        android:textAlignment="center"
+        android:textColor="#F6F2F2"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/et_Grade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_Grade"
+        android:layout_width="245dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="23dp"
+        android:ems="10"
+        android:hint="Grade"
+        android:inputType="textPersonName"
+        android:textColor="#F3ECEC"
+        android:textColorHint="#F3EFEF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/et_weight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grade_prompt" />
+
+    <EditText
+        android:id="@+id/et_weight"
+        android:layout_width="249dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        android:ems="10"
+        android:hint="Weight"
+        android:inputType="textPersonName"
+        android:textColor="#F4F0F0"
+        android:textColorHint="#F4EFEF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btn_show"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_Grade" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginEnd="15dp"
+        android:text="Add grade"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btn_show"
+        app:layout_constraintEnd_toStartOf="@+id/btn_show"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_show"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="18dp"
+        android:text="Show mark"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/grade_Dsiplayed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_add"
+        app:layout_constraintTop_toBottomOf="@+id/et_weight" />
+
+    <TextView
+        android:id="@+id/grade_Dsiplayed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        android:textColor="#F4EFEF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/finalMark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_show" />
+
+    <TextView
+        android:id="@+id/finalMark"
+        android:layout_width="244dp"
+        android:layout_height="74dp"
+        android:layout_marginBottom="21dp"
+        android:textAlignment="center"
+        android:textColor="#EFE9E9"
+        android:textColorHint="#F8F5F5"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btn_Home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grade_Dsiplayed" />
+
+    <Button
+        android:id="@+id/btn_Home"
+        android:layout_width="165dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="14dp"
+        android:text="Home"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/finalMark" />
+</androidx.constraintlayout.widget.ConstraintLayout>

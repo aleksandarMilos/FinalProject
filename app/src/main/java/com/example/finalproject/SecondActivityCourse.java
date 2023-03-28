@@ -33,7 +33,7 @@ import java.util.concurrent.Executors;
 public class SecondActivityCourse extends AppCompatActivity {
 
     FloatingActionButton newCourseButton;
-    Button signoutBtn;
+    Button signoutBtn, gradeCalculator;
     ListView listViewData;
     MyDatabase mydb; //For creating the database
     TextView displayUsername;
@@ -59,6 +59,7 @@ public class SecondActivityCourse extends AppCompatActivity {
         displayUsername = findViewById(R.id.displayCurrentUser);
         deleteSwitch = findViewById(R.id.deleteSwitch);
         signoutBtn = findViewById(R.id.signoutBtn);
+        gradeCalculator = findViewById(R.id.calculator);
         mydb = Room.databaseBuilder(getApplicationContext(), MyDatabase.class, "UserPass_db").fallbackToDestructiveMigration().build(); //Building the database once
 
         //Retrieving Username and password from first activity or Retrieving it from Create user
@@ -241,6 +242,14 @@ public class SecondActivityCourse extends AppCompatActivity {
 
         displayUsername.setText("Current User: " + username); //Displaying current user name in the Textview @ the bottom right corner beside the signout button
 
+        gradeCalculator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent calc = new Intent(SecondActivityCourse.this, GradeCalc.class);
+                calc.putExtra("username", username);
+                startActivity(calc);
+            }
+        });
     }
 
     //Method for Saving the Username/Password Data into the database dbUserPass
