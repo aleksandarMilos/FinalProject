@@ -53,6 +53,7 @@ public class ToDoList extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
         todoList = findViewById(R.id.todo_list);
 
+
         tasks = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
         todoList.setAdapter(adapter);
