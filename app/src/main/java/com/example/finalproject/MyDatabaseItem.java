@@ -1,4 +1,7 @@
 package com.example.finalproject;
 
-public class MyDatabaseItem {
+import androidx.room.RoomDatabase;
+
+public abstract class MyDatabaseItem extends RoomDatabase {
+
 }
