@@ -224,6 +224,9 @@ public class SecondActivityCourse extends AppCompatActivity {
         //TODO, now that I have implemented all the essential functionalities to the First/Second Activities, the extension is now to click into a Course (course position), and then we'll have unique options for that, maybe some
         //  todo list, a calendar, anything. This is where the linking of the Calendar/Todo list to the First/Second app comes into play
 
+        //TODO Possible idea: Like tips/tricks page, or User manual on how to use certain parts of the app.
+        // Probably a future works thing
+
 
         //--------------------------------------------------------------------------------------
         //Signout button functionality
@@ -290,7 +293,6 @@ public class SecondActivityCourse extends AppCompatActivity {
 
     public void showCourseData(String username){
         executorService.execute(new Runnable() {
-            String string;
             @Override
             public void run() {
                 List<Course> courseList = mydb.courseDAO().getAllCourse(username);

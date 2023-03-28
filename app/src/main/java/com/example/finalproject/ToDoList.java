@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
+import androidx.room.Room;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -38,8 +40,13 @@ public class ToDoList extends AppCompatActivity {
     private Button addButton;
     private ListView todoList;
 
-    public static ArrayList<String> tasks;
-    private ArrayAdapter<String> adapter;
+    //Database functionality
+    MyDatabaseItem mydbItem;
+    CustomItemListAdapter customItemListAdapter;
+
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    private Handler handler = HandlerCompat.createAsync(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +60,10 @@ public class ToDoList extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
         todoList = findViewById(R.id.todo_list);
 
+        mydbItem = Room.databaseBuilder(getApplicationContext(), MyDatabaseItem.class, "TodoItem_table").fallbackToDestructiveMigration().build(); //Building the database once
 
-        tasks = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
-        todoList.setAdapter(adapter);
+        //Showing our to-list previously entered stuff via database
+        showItemdata();
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,12 +75,32 @@ public class ToDoList extends AppCompatActivity {
 
                 if (!title.isEmpty() && !description.isEmpty() && !date.isEmpty() && !time.isEmpty()) {
                     String task = title + " - " + description + " - " + date + " - " + time;
-                    tasks.add(task);
-                    adapter.notifyDataSetChanged();
+                    //tasks.add(task);
+                    //adapter.notifyDataSetChanged();
+                    Item item = new Item();
+                    item.setItem(task);
+                    executorService.execute(new Runnable() { //For running in a separate thread because this is for database entry
+                        @Override
+                        public void run() {
+                            long l = mydbItem.itemDao().insertData(item);
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(l>0){ //means some row has been changed/modified
+                                        Toast.makeText(ToDoList.this, "New task inserted!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{ //Not inserted/failed
+                                        Toast.makeText(ToDoList.this, "New task was not been created...", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    });
                     titleInput.setText("");
                     descriptionInput.setText("");
                     dateInput.setText("");
                     timeInput.setText("");
+                    showItemdata();
                 } else {
                     Toast.makeText(ToDoList.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                 }
@@ -84,7 +111,7 @@ public class ToDoList extends AppCompatActivity {
         Button dateButton = findViewById(R.id.date_button);
         Button timeButton = findViewById(R.id.time_button);
 
-// Set onClickListeners for the Date and Time buttons
+        // Set onClickListeners for the Date and Time buttons
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +133,7 @@ public class ToDoList extends AppCompatActivity {
             }
         });
 
+        //Time Button
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,5 +155,43 @@ public class ToDoList extends AppCompatActivity {
             }
         });
 
+        //Remove functionality from ListView
+        todoList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Item item = (Item)customItemListAdapter.getItem(position);
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        int del = mydbItem.itemDao().deleteData(item);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (del > 0){
+                                    customItemListAdapter.removeList(position);
+                                }
+                            }
+                        });
+                    }
+                });
+                return true;
+            }
+        });
+    }
+
+    public void showItemdata(){
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Item> itemList = mydbItem.itemDao().getAllItem();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        customItemListAdapter = new CustomItemListAdapter(ToDoList.this, itemList);
+                        todoList.setAdapter(customItemListAdapter);
+                    }
+                });
+            }
+        });
     }
 }

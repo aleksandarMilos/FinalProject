@@ -27,6 +27,12 @@
             android:label="Create a New User"
             android:name=".CreateUserActivity"
             />
+        <activity
+            android:label="Todo List"
+            android:name=".ToDoList"
+            android:exported="true"
+            />
+
 
     </application>
 
