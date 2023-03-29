@@ -210,14 +210,17 @@ public class SecondActivityCourse extends AppCompatActivity {
                     });
                     confirm.show();
                 }
+                else{ //This occurs when you're just clicking on one of the Courses regularly
+                    //Regular Course Click Functionality
+                    Intent intent_toTodo = new Intent(SecondActivityCourse.this, ToDoList.class);
+                    startActivity(intent_toTodo);
+                }
             }
         });
         //--------------------------------------------------------------------------------------
 
-        //TODO Cleanup the SecondActivityCourse xml UI design (I'm good at the functionality, but suck at the UI guys xd)
-
-        //TODO Maybe have a check password thing, so that user if they forgot their password, can check it via the app idk? <- This could be a further implementation where we do a "Settings" button
-        //TODO Probably add a "settings" button on this Activity. But yeah we'll have to fix up the UI if we want to implement more buttons/functionality
+        //TODO/Future Work Maybe have a check password thing, so that user if they forgot their password, can check it via the app idk? <- This could be a further implementation where we do a "Settings" button
+        //TODO/Future Work Probably add a "settings" button on this Activity. But yeah we'll have to fix up the UI if we want to implement more buttons/functionality
 
         //TODO Figure out database functionality across multiple activities. This is useful for when we link the Calendar and everything together, however at the moment, I just do the bruteforce way
         // where I simply send everything I want to save in a Database to this SecondActivity.Course

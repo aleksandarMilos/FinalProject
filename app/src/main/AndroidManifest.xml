@@ -19,7 +19,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="Smart Link">
+            android:label="Smart Link" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,6 +33,8 @@
             android:name=".ToDoList"
             android:exported="true"
             android:label="Todo List" />
+
+
     </application>
 
 </manifest>

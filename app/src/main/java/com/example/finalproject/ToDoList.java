@@ -1,5 +1,6 @@
 package com.example.finalproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import androidx.room.Room;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,12 +28,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ToDoList extends AppCompatActivity {
+public class ToDoList extends AppCompatActivity{
 
     private EditText titleInput;
     private EditText descriptionInput;
@@ -42,6 +46,7 @@ public class ToDoList extends AppCompatActivity {
 
     //Database functionality
     MyDatabaseItem mydbItem;
+
     CustomItemListAdapter customItemListAdapter;
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -60,7 +65,7 @@ public class ToDoList extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
         todoList = findViewById(R.id.todo_list);
 
-        mydbItem = Room.databaseBuilder(getApplicationContext(), MyDatabaseItem.class, "TodoItem_table").fallbackToDestructiveMigration().build(); //Building the database once
+        mydbItem = Room.databaseBuilder(getApplicationContext(), MyDatabaseItem.class, "TodoItem_db").fallbackToDestructiveMigration().build();
 
         //Showing our to-list previously entered stuff via database
         showItemdata();
@@ -68,6 +73,11 @@ public class ToDoList extends AppCompatActivity {
         //TODO still need to link with SecondActivityCourse.java
         // Ideally, it would be clicking on a specific course will lead to its own unique todo-list
         // If not possible, then we simply add it as a button on our SecondActivityCourse.java
+
+        //TODO Future Work, currently if the user enters Title/Description and then random Strings into Date and Time (but doesn't press Select Date or Select Time), and then presses Add task
+        // It'll add the task with those random Strings representing Dates/Time. In the future, ideally they should only be able to add a task with valid Dates and Times
+        // So currently can add wrong "Dates" and "Times"
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +89,6 @@ public class ToDoList extends AppCompatActivity {
 
                 if (!title.isEmpty() && !description.isEmpty() && !date.isEmpty() && !time.isEmpty()) {
                     String task = title + " - " + description + " - " + date + " - " + time;
-                    //tasks.add(task);
-                    //adapter.notifyDataSetChanged();
                     Item item = new Item();
                     item.setItem(task);
                     executorService.execute(new Runnable() { //For running in a separate thread because this is for database entry
@@ -116,13 +124,20 @@ public class ToDoList extends AppCompatActivity {
         Button timeButton = findViewById(R.id.time_button);
 
         // Set onClickListeners for the Date and Time buttons
-        //FIXME Currently will crash if theres something already inputted in the DATE field before clicking the date button
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Get the current date from the Date input field, or use today's date if it's empty
                 String dateString = dateInput.getText().toString();
-                LocalDate date = dateString.isEmpty() ? LocalDate.now() : LocalDate.parse(dateString);
+                LocalDate date = null;
+
+                //This is to prevent a crash if the user enters a random String into the field and then presses the date button
+                try{
+                    date = dateString.isEmpty() ? LocalDate.now() : LocalDate.parse(dateString);
+                } catch (DateTimeParseException e){
+                    Toast.makeText(ToDoList.this, "Please enter a valid date in the format: YYYY-MM-DD", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Create a DatePickerDialog and show it
                 DatePickerDialog datePicker = new DatePickerDialog(ToDoList.this,
@@ -130,7 +145,7 @@ public class ToDoList extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
                                 // Update the Date input field with the selected date
-                                dateInput.setText(String.format("%04d/%02d/%02d", year, month + 1, dayOfMonth));
+                                dateInput.setText(String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth));
                             }
                         },
                         date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
@@ -144,7 +159,15 @@ public class ToDoList extends AppCompatActivity {
             public void onClick(View view) {
                 // Get the current time from the Time input field, or use the current time if it's empty
                 String timeString = timeInput.getText().toString();
-                LocalTime time = timeString.isEmpty() ? LocalTime.now() : LocalTime.parse(timeString);
+                LocalTime time = null;
+
+                //Same check here as Date, to prevent a crash if user enters random String
+                try{
+                    time = timeString.isEmpty() ? LocalTime.now() : LocalTime.parse(timeString);
+                } catch (DateTimeParseException e){
+                    Toast.makeText(ToDoList.this, "Please enter a valid 24 hour time in the format HH:MM", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Create a TimePickerDialog and show it
                 TimePickerDialog timePicker = new TimePickerDialog(ToDoList.this,
@@ -160,25 +183,42 @@ public class ToDoList extends AppCompatActivity {
             }
         });
 
-        //Remove functionality from ListView
+        //DeleteTask Functionality from the TodoList ListView
         todoList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Item item = (Item)customItemListAdapter.getItem(position);
-                executorService.execute(new Runnable() {
+
+                //Confirmation box to make sure we want to delete the task
+                AlertDialog.Builder confirm = new AlertDialog.Builder(ToDoList.this);
+                confirm.setTitle("Delete Task");
+                confirm.setMessage("Are you sure you want to delete this?");
+                confirm.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
-                    public void run() {
-                        int del = mydbItem.itemDao().deleteData(item);
-                        handler.post(new Runnable() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        executorService.execute(new Runnable() {
                             @Override
                             public void run() {
-                                if (del > 0){
-                                    customItemListAdapter.removeList(position);
-                                }
+                                int del = mydbItem.itemDao().deleteData(item);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (del > 0){
+                                            customItemListAdapter.removeList(position);
+                                        }
+                                    }
+                                });
                             }
                         });
                     }
                 });
+                confirm.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                confirm.show();
                 return true;
             }
         });
