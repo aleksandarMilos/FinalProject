@@ -63,7 +63,7 @@
         android:text="Add Task"
         android:layout_below="@+id/input_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp" />
+        android:layout_marginTop="16dp" />
 
     <ListView
         android:id="@+id/todo_list"
