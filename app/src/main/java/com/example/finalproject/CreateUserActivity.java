@@ -25,6 +25,15 @@ public class CreateUserActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.user_Password);
         reEnterPasswordEditText = findViewById(R.id.user_Password2);
 
+        //Coming back from SecondActivityCourse, this occurs if the user already exists
+        //Thus want to show an error message
+        Intent intent_fromCourse = getIntent();
+        boolean existingUser = intent_fromCourse.getBooleanExtra("existingUser", false);
+        if (existingUser == true){
+            Toast.makeText(this, "User already exists! Try a different username.", Toast.LENGTH_SHORT).show();
+        }
+
+
         // Set up the button to create the user account
         Button createAccountButton = findViewById(R.id.create_button);
         createAccountButton.setOnClickListener(new View.OnClickListener() {

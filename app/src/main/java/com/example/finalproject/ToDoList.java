@@ -65,6 +65,10 @@ public class ToDoList extends AppCompatActivity {
         //Showing our to-list previously entered stuff via database
         showItemdata();
 
+        //TODO still need to link with SecondActivityCourse.java
+        // Ideally, it would be clicking on a specific course will lead to its own unique todo-list
+        // If not possible, then we simply add it as a button on our SecondActivityCourse.java
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +116,7 @@ public class ToDoList extends AppCompatActivity {
         Button timeButton = findViewById(R.id.time_button);
 
         // Set onClickListeners for the Date and Time buttons
+        //FIXME Currently will crash if theres something already inputted in the DATE field before clicking the date button
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
