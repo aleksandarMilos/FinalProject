@@ -39,8 +39,6 @@ public class SecondActivityCourse extends AppCompatActivity {
     TextView displayUsername;
     Switch deleteSwitch;
 
-    //This activity along with its associated activities (Course.java, CourseDAO.java, CustomListAdapter.java, MyDatabase.java) is mainly what we did in Week10RoomDatabase, but tuned to our
-    // own use case for keeping track of Courses in relation to the User that has logged in
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Handler handler = HandlerCompat.createAsync(Looper.getMainLooper());
     CustomListAdapter customListAdapter;
@@ -75,9 +73,21 @@ public class SecondActivityCourse extends AppCompatActivity {
         //Intents towards MainActivity
         Intent intent_toMain = new Intent(SecondActivityCourse.this, MainActivity.class);
 
+
+        //TODO/Future Work Maybe have a check password thing, so that user if they forgot their password, can check it via the app idk? <- This could be a further implementation where we do a "Settings" button
+        //TODO/Future Work Probably add a "settings" button on this Activity. But yeah we'll have to fix up the UI if we want to implement more buttons/functionality
+        //TODO/Future Work Email address functionality
+
+        //TODO Possible idea: Like tips/tricks page, or User manual on how to use certain parts of the app. (?) Question mark button, where user's click into it, it'll show How to use the app
+        // Probably a future works thing
+
+        //TODO/FutureWork: Multiple Course delete functionality. Maybe instead of current delete functionality
+        // Make it so long click you can delete a course that way, but when the Delete Switch is checked, you can select a number of courses, and then delete them that way
+        //FutureWork: Rearrange Courses/Tasks in the order you want
+
         //--------------------------------------------------------------------------------------
-        //This code is to check for existing user. Note we only want to do this if they clicked it via the login button.
-        //Also currently everything IS case sensitive.
+        //This code is to check for existing user via the Login button
+        //Case sensitive
         if (viaLogin == true){
             executorService.execute(new Runnable() {
                 @Override
@@ -92,6 +102,7 @@ public class SecondActivityCourse extends AppCompatActivity {
                             else{
                                 intent_toMain.putExtra("invalidUserPass", true);
                                 startActivity(intent_toMain);
+                                finish();
                             }
                         }
                     });
@@ -101,7 +112,7 @@ public class SecondActivityCourse extends AppCompatActivity {
         //--------------------------------------------------------------------------------------
 
         //--------------------------------------------------------------------------------------
-        //Code for if we came from CreateUser, we want to add this new user to the database
+        //Code for if we came from CreateUser, check for if the user already exists in the database, if not, add them to the database, if they exist, send them back to the Create User page and display error message there
         Intent intent_toCreate = new Intent(SecondActivityCourse.this, CreateUserActivity.class);
         if (viaCreateUser == true){
             executorService.execute(new Runnable() {
@@ -174,13 +185,14 @@ public class SecondActivityCourse extends AppCompatActivity {
         //--------------------------------------------------------------------------------------
         // Delete Switch Functionality, similar to Week10 Lecture functionality
         // https://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
-        // Also functionality to go to TodoList
+        // Also functionality to go to TodoList, with each TodoList specific to the clicked course
         listViewData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Course course = (Course)customListAdapter.getItem(position); //Gets the "Course" at the position clicked, which is the one we want to delete
 
                 if (deleteSwitch.isChecked()){ //Only do this if our delete switch is switched on
+                    //AlertDialog (Confirmation box) functionality
                     AlertDialog.Builder confirm = new AlertDialog.Builder(SecondActivityCourse.this);
                     confirm.setTitle("Confirm");
                     confirm.setMessage("Are you sure you want to delete this?");
@@ -216,6 +228,7 @@ public class SecondActivityCourse extends AppCompatActivity {
                     Intent intent_toTodo = new Intent(SecondActivityCourse.this, ToDoList.class);
                     int courseID = course.get_id();
                     String courseName = course.getCourse();
+                    //Passing all this information to the TodoList so that it can be utilized/added to the Database
                     intent_toTodo.putExtra("courseID", courseID);
                     intent_toTodo.putExtra("usName", username);
                     intent_toTodo.putExtra("courseName", courseName);
@@ -224,22 +237,6 @@ public class SecondActivityCourse extends AppCompatActivity {
             }
         });
         //--------------------------------------------------------------------------------------
-
-        //TODO/Future Work Maybe have a check password thing, so that user if they forgot their password, can check it via the app idk? <- This could be a further implementation where we do a "Settings" button
-        //TODO/Future Work Probably add a "settings" button on this Activity. But yeah we'll have to fix up the UI if we want to implement more buttons/functionality
-
-        //TODO Figure out database functionality across multiple activities. This is useful for when we link the Calendar and everything together, however at the moment, I just do the bruteforce way
-        // where I simply send everything I want to save in a Database to this SecondActivity.Course
-
-        //TODO, now that I have implemented all the essential functionalities to the First/Second Activities, the extension is now to click into a Course (course position), and then we'll have unique options for that, maybe some
-        //  todo list, a calendar, anything. This is where the linking of the Calendar/Todo list to the First/Second app comes into play
-
-        //TODO Possible idea: Like tips/tricks page, or User manual on how to use certain parts of the app.
-        // Probably a future works thing
-
-        //FutureWork: Multiple Course delete functionality. Maybe instead of current delete functionality
-        // Make it so long click you can delete a course that way, but when the Delete Switch is checked, you can select a number of courses, and then delete them that way
-        //FutureWork: Rearrange Courses/Tasks in the order you want
 
 
         //--------------------------------------------------------------------------------------
@@ -289,7 +286,8 @@ public class SecondActivityCourse extends AppCompatActivity {
         });
     }
 
-    public void saveCourseData(String newCourse, String username){ //Adding new course along with the Current User that added this new course
+    //Adding new course along with the Current User that added this new course to the Database (Tying Users to their CourseList)
+    public void saveCourseData(String newCourse, String username){
         Course course = new Course();
         course.setCourse(newCourse);
         course.setuName(username);

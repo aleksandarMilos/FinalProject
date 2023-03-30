@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         spLoadData(); //Loading the shared-preferences which keeps track of our Username/password
 
-        //TODO or possibly future work if too hard: Automatically logging the user out after a set amount of time the next time they open the app, e.g. 24 hours or a week
+        //TODO/Future work if too hard: Automatically logging the user out after a set amount of time the next time they open the app, e.g. 24 hours or a week
 
         //--------------------------------------------------------------------------------------
         Intent fromSecondActivity = getIntent();
