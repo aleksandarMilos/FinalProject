@@ -84,6 +84,7 @@ public class GradeCalc extends AppCompatActivity {
                 Intent home = new Intent(GradeCalc.this, SecondActivityCourse.class);
                 home.putExtra("username", username);
                 startActivity(home);
+                finish();
             }
         });
     }
