@@ -15,7 +15,9 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="18dp"
         android:layout_marginBottom="108dp"
-        app:srcCompat="@drawable/brain_logo" />
+        app:srcCompat="@drawable/brain_logo"
+        android:visibility="invisible"
+        />
 
     <LinearLayout
         android:id="@+id/input_layout"
@@ -82,7 +84,7 @@
         android:text="Add Task"
         android:layout_below="@+id/input_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="0dp" />
 
     <ListView
         android:id="@+id/todo_list"
@@ -101,6 +103,8 @@
         android:layout_marginBottom="59dp"
         android:text="SmartLink"
         android:textColor="@color/white"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:visibility="invisible"
+        />
 
 </RelativeLayout>

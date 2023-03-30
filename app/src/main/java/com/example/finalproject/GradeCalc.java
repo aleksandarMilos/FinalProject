@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -44,8 +45,16 @@ public class GradeCalc extends AppCompatActivity {
         button_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float grade_entered = Float.parseFloat(grade.getText().toString());
-                float weight_entered = Float.parseFloat(weight.getText().toString());
+                //Error checking if they entered stuff other than numbers
+                float grade_entered = 0;
+                float weight_entered = 0;
+                try{
+                    grade_entered = Float.parseFloat(grade.getText().toString());
+                    weight_entered = Float.parseFloat(weight.getText().toString());
+                } catch (NumberFormatException e){
+                    Toast.makeText(GradeCalc.this, "Please enter a valid Grade/Weight", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 grades.add(grade_entered);
                 weights.add(weight_entered);
                 grade.setText("");

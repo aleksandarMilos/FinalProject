@@ -231,6 +231,10 @@ public class SecondActivityCourse extends AppCompatActivity {
         //TODO Possible idea: Like tips/tricks page, or User manual on how to use certain parts of the app.
         // Probably a future works thing
 
+        //FutureWork: Multiple Course delete functionality. Maybe instead of current delete functionality
+        // Make it so long click you can delete a course that way, but when the Delete Switch is checked, you can select a number of courses, and then delete them that way
+        //FutureWork: Rearrange Courses/Tasks in the order you want
+
 
         //--------------------------------------------------------------------------------------
         //Signout button functionality
