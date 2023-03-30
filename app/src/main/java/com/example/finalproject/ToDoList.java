@@ -71,6 +71,8 @@ public class ToDoList extends AppCompatActivity{
         // It'll add the task with those random Strings representing Dates/Time. In the future, ideally they should only be able to add a task with valid Dates and Times
         // So currently can add wrong "Dates" and "Times"
 
+        //TODO Future Work -> Maybe make it so the task inputting and adding button half of the XML is part of a fragment, or something so that we have more space for the actual list and cleaner UI
+
         //Getting what User along with their specific Course from the previous ListView got us here
         Intent intent_fromCourse = getIntent();
         int courseID = intent_fromCourse.getIntExtra("courseID", 0);
