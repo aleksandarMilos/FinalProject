@@ -174,6 +174,7 @@ public class SecondActivityCourse extends AppCompatActivity {
         //--------------------------------------------------------------------------------------
         // Delete Switch Functionality, similar to Week10 Lecture functionality
         // https://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
+        // Also functionality to go to TodoList
         listViewData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -211,8 +212,13 @@ public class SecondActivityCourse extends AppCompatActivity {
                     confirm.show();
                 }
                 else{ //This occurs when you're just clicking on one of the Courses regularly
-                    //Regular Course Click Functionality
+                    //Regular Course Click Functionality to go to TodoList for that course
                     Intent intent_toTodo = new Intent(SecondActivityCourse.this, ToDoList.class);
+                    int courseID = course.get_id();
+                    String courseName = course.getCourse();
+                    intent_toTodo.putExtra("courseID", courseID);
+                    intent_toTodo.putExtra("usName", username);
+                    intent_toTodo.putExtra("courseName", courseName);
                     startActivity(intent_toTodo);
                 }
             }

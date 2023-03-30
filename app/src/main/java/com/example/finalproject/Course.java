@@ -5,7 +5,8 @@ import androidx.room.Entity; //We imported this
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Course_table", foreignKeys = {@ForeignKey(entity = UserPass.class,
+@Entity(tableName = "Course_table",
+        foreignKeys = {@ForeignKey(entity = UserPass.class,
         parentColumns = "Username",
         childColumns = "uName",
         onDelete = ForeignKey.CASCADE)}) //Foreign key is the Username because we want each unique user to have their own courses that they added to showup for them

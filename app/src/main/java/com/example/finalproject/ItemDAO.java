@@ -18,6 +18,10 @@ public interface ItemDAO {
     @Query("SELECT * FROM item_table")
     List<Item> getAllItem();
 
+    //This Query is used to get us the already exisiting TodoList associated to a specific Course of a Specific user
+    @Query("SELECT * FROM item_table WHERE usName = :username AND courseID = :courseID")
+    List<Item> getAllTasksforUserCourse(String username, int courseID);
+
     @Update
     int updateData(Item item);
 

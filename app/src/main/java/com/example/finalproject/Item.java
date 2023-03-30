@@ -2,9 +2,21 @@ package com.example.finalproject;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "item_table")
+@Entity(tableName = "item_table", foreignKeys = {
+        @ForeignKey(entity = Course.class,
+                parentColumns = "id",
+                childColumns = "courseID",
+                onDelete = ForeignKey.CASCADE
+        ),
+        @ForeignKey(entity = UserPass.class,
+                parentColumns = "Username",
+                childColumns = "usName",
+                onDelete = ForeignKey.CASCADE
+        )
+})
 public class Item {
 
     @PrimaryKey(autoGenerate = true)
@@ -23,30 +35,19 @@ public class Item {
 
     public void setItem(String item) { this.item = item; }
 
-//    @ColumnInfo(name = "ItemName")
-//    private String item_name;
-//
-//    @ColumnInfo(name = "descr")
-//    private String descr;
-//
-//    @ColumnInfo(name = "date")
-//    private String date;
-//
-//    @ColumnInfo(name = "time")
-//    private String time;
-//
-//
-//    public String get_item_name(){ return item_name; }
-//    public void set_item_name(String item_name) { this.item_name = item_name; }
-//
-//    public String get_descr(){ return descr; }
-//    public void set_descr(String descr){ this.descr = descr; }
-//
-//    public String get_date(){ return date; }
-//    public void set_date(String date){ this.date = date; }
-//
-//    public String get_time(){ return time; }
-//    public void set_time(String time){ this.time = time; }
+    @ColumnInfo(name = "courseID")
+    public int courseID;
+
+    public void setCourseID(int courseID){ this.courseID = courseID; }
+    public int getCourseID() { return this.courseID; }
+
+    @ColumnInfo(name = "usName")
+    public String usName;
+
+    public void setUsName(String usName){ this.usName = usName; }
+    public String getUsName(){ return this.usName; }
+
+
 
 
 }

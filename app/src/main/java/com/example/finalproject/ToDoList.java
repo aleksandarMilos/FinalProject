@@ -44,8 +44,8 @@ public class ToDoList extends AppCompatActivity{
     private Button addButton;
     private ListView todoList;
 
-    //Database functionality
-    MyDatabaseItem mydbItem;
+    //Testing
+    MyDatabase mydb;
 
     CustomItemListAdapter customItemListAdapter;
 
@@ -65,19 +65,22 @@ public class ToDoList extends AppCompatActivity{
         addButton = findViewById(R.id.add_button);
         todoList = findViewById(R.id.todo_list);
 
-        mydbItem = Room.databaseBuilder(getApplicationContext(), MyDatabaseItem.class, "TodoItem_db").fallbackToDestructiveMigration().build();
-
-        //Showing our to-list previously entered stuff via database
-        showItemdata();
-
-        //TODO still need to link with SecondActivityCourse.java
-        // Ideally, it would be clicking on a specific course will lead to its own unique todo-list
-        // If not possible, then we simply add it as a button on our SecondActivityCourse.java
+        mydb = Room.databaseBuilder(getApplicationContext(), MyDatabase.class, "UserPass_db").fallbackToDestructiveMigration().build();
 
         //TODO Future Work, currently if the user enters Title/Description and then random Strings into Date and Time (but doesn't press Select Date or Select Time), and then presses Add task
         // It'll add the task with those random Strings representing Dates/Time. In the future, ideally they should only be able to add a task with valid Dates and Times
         // So currently can add wrong "Dates" and "Times"
 
+        //Getting what User along with their specific Course from the previous ListView got us here
+        Intent intent_fromCourse = getIntent();
+        int courseID = intent_fromCourse.getIntExtra("courseID", 0);
+        String usName = intent_fromCourse.getStringExtra("usName");
+        String courseName = intent_fromCourse.getStringExtra("courseName");
+
+        setTitle(courseName + " Tasks");
+
+        //This is to display pre-existing TodoList tasks for the specific User and Course
+        showItemdata(usName, courseID);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,10 +94,12 @@ public class ToDoList extends AppCompatActivity{
                     String task = title + " - " + description + " - " + date + " - " + time;
                     Item item = new Item();
                     item.setItem(task);
+                    item.setCourseID(courseID);
+                    item.setUsName(usName);
                     executorService.execute(new Runnable() { //For running in a separate thread because this is for database entry
                         @Override
                         public void run() {
-                            long l = mydbItem.itemDao().insertData(item);
+                            long l = mydb.itemDao().insertData(item);
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -112,7 +117,7 @@ public class ToDoList extends AppCompatActivity{
                     descriptionInput.setText("");
                     dateInput.setText("");
                     timeInput.setText("");
-                    showItemdata();
+                    showItemdata(usName, courseID);
                 } else {
                     Toast.makeText(ToDoList.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
                 }
@@ -199,7 +204,7 @@ public class ToDoList extends AppCompatActivity{
                         executorService.execute(new Runnable() {
                             @Override
                             public void run() {
-                                int del = mydbItem.itemDao().deleteData(item);
+                                int del = mydb.itemDao().deleteData(item);
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -224,11 +229,11 @@ public class ToDoList extends AppCompatActivity{
         });
     }
 
-    public void showItemdata(){
+    public void showItemdata(String username, int courseID){
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                List<Item> itemList = mydbItem.itemDao().getAllItem();
+                List<Item> itemList = mydb.itemDao().getAllTasksforUserCourse(username, courseID);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
