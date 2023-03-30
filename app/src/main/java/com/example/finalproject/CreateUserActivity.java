@@ -54,8 +54,11 @@ public class CreateUserActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    // Show an error message
-                    Toast.makeText(CreateUserActivity.this, "Invalid username or password. Please try again.", Toast.LENGTH_SHORT).show();
+                    if (!isValidPassword(password)) {
+                        Toast.makeText(CreateUserActivity.this, "Password must be at least 8 characters long", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(CreateUserActivity.this, "Invalid username or password. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
