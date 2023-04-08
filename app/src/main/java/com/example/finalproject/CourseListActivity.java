@@ -3,9 +3,6 @@ package com.example.finalproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Room;
 
 import android.content.DialogInterface;
@@ -14,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,7 +26,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SecondActivityCourse extends AppCompatActivity {
+public class CourseListActivity extends AppCompatActivity {
 
     FloatingActionButton newCourseButton;
     Button signoutBtn, gradeCalculator;
@@ -49,8 +45,7 @@ public class SecondActivityCourse extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second_course);
-
+        setContentView(R.layout.activity_course_list);
 
         newCourseButton = findViewById(R.id.addCourseBtn);
         listViewData = findViewById(R.id.listViewData);
@@ -71,7 +66,7 @@ public class SecondActivityCourse extends AppCompatActivity {
         setTitle(username + "'s Courses");
 
         //Intents towards MainActivity
-        Intent intent_toMain = new Intent(SecondActivityCourse.this, MainActivity.class);
+        Intent intent_toMain = new Intent(CourseListActivity.this, MainActivity.class);
 
 
         //TODO/Future Work Maybe have a check password thing, so that user if they forgot their password, can check it via the app idk? <- This could be a further implementation where we do a "Settings" button
@@ -97,7 +92,7 @@ public class SecondActivityCourse extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (existUser == true){
-                                Toast.makeText(SecondActivityCourse.this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CourseListActivity.this, "Welcome " + username + "!", Toast.LENGTH_SHORT).show();
                             }
                             else{
                                 intent_toMain.putExtra("invalidUserPass", true);
@@ -113,7 +108,7 @@ public class SecondActivityCourse extends AppCompatActivity {
 
         //--------------------------------------------------------------------------------------
         //Code for if we came from CreateUser, check for if the user already exists in the database, if not, add them to the database, if they exist, send them back to the Create User page and display error message there
-        Intent intent_toCreate = new Intent(SecondActivityCourse.this, CreateUserActivity.class);
+        Intent intent_toCreate = new Intent(CourseListActivity.this, CreateUserActivity.class);
         if (viaCreateUser == true){
             executorService.execute(new Runnable() {
                 @Override
@@ -147,11 +142,11 @@ public class SecondActivityCourse extends AppCompatActivity {
         newCourseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(SecondActivityCourse.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CourseListActivity.this);
                 builder.setTitle("Add a new Course");
 
                 // Set up the input
-                final EditText input = new EditText(SecondActivityCourse.this);
+                final EditText input = new EditText(CourseListActivity.this);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
                 builder.setView(input);
@@ -163,7 +158,7 @@ public class SecondActivityCourse extends AppCompatActivity {
                         courseInput = input.getText().toString();
                         if (courseInput.trim().length() == 0){ //Don't want them to enter an empty course or empty spaces
                             dialog.cancel();
-                            Toast.makeText(SecondActivityCourse.this, "Please enter a course name.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CourseListActivity.this, "Please enter a course name.", Toast.LENGTH_SHORT).show();
                             return; //Get out of this "Add" part of the code
                         }
                         saveCourseData(courseInput, username);
@@ -193,7 +188,7 @@ public class SecondActivityCourse extends AppCompatActivity {
 
                 if (deleteSwitch.isChecked()){ //Only do this if our delete switch is switched on
                     //AlertDialog (Confirmation box) functionality
-                    AlertDialog.Builder confirm = new AlertDialog.Builder(SecondActivityCourse.this);
+                    AlertDialog.Builder confirm = new AlertDialog.Builder(CourseListActivity.this);
                     confirm.setTitle("Confirm");
                     confirm.setMessage("Are you sure you want to delete this?");
                     confirm.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -225,7 +220,7 @@ public class SecondActivityCourse extends AppCompatActivity {
                 }
                 else{ //This occurs when you're just clicking on one of the Courses regularly
                     //Regular Course Click Functionality to go to TodoList for that course
-                    Intent intent_toTodo = new Intent(SecondActivityCourse.this, ToDoList.class);
+                    Intent intent_toTodo = new Intent(CourseListActivity.this, ToDoList.class);
                     int courseID = course.get_id();
                     String courseName = course.getCourse();
                     //Passing all this information to the TodoList so that it can be utilized/added to the Database
@@ -255,7 +250,7 @@ public class SecondActivityCourse extends AppCompatActivity {
         gradeCalculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent calc = new Intent(SecondActivityCourse.this, GradeCalc.class);
+                Intent calc = new Intent(CourseListActivity.this, GradeCalc.class);
                 calc.putExtra("username", username);
                 startActivity(calc);
             }
@@ -275,10 +270,10 @@ public class SecondActivityCourse extends AppCompatActivity {
                     @Override
                     public void run() {
                         if(l>0){ //means some row has been changed/modified
-                            Toast.makeText(SecondActivityCourse.this, "New User " + username + " Created!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CourseListActivity.this, "New User " + username + " Created!", Toast.LENGTH_SHORT).show();
                         }
                         else{ //Not inserted/failed
-                            Toast.makeText(SecondActivityCourse.this, "New User has not been created...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CourseListActivity.this, "New User has not been created...", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -299,10 +294,10 @@ public class SecondActivityCourse extends AppCompatActivity {
                     @Override
                     public void run() {
                         if(l>0){ //means some row has been changed/modified
-                            //Toast.makeText(SecondActivityCourse.this, "New Course " + newCourse + "Added!", Toast.LENGTH_SHORT).show();  //Uncomment these checks if needed
+                            //Toast.makeText(CourseListActivity.this, "New Course " + newCourse + "Added!", Toast.LENGTH_SHORT).show();  //Uncomment these checks if needed
                         }
                         else{ //Not inserted/failed
-                            Toast.makeText(SecondActivityCourse.this, "New course has not been added...", Toast.LENGTH_SHORT).show(); //This should not pop up if everything's functioning correctly, I'll leave this check here
+                            Toast.makeText(CourseListActivity.this, "New course has not been added...", Toast.LENGTH_SHORT).show(); //This should not pop up if everything's functioning correctly, I'll leave this check here
                         }
                     }
                 });
@@ -319,7 +314,7 @@ public class SecondActivityCourse extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        customListAdapter = new CustomListAdapter(SecondActivityCourse.this, courseList);
+                        customListAdapter = new CustomListAdapter(CourseListActivity.this, courseList);
                         listViewData.setAdapter(customListAdapter);
                     }
                 });

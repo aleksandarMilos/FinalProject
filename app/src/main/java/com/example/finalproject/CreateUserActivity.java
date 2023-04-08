@@ -25,14 +25,13 @@ public class CreateUserActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.user_Password);
         reEnterPasswordEditText = findViewById(R.id.user_Password2);
 
-        //Coming back from SecondActivityCourse, this occurs if the user already exists
+        //Coming back from CourseListActivity, this occurs if the user already exists
         //Thus want to show an error message
         Intent intent_fromCourse = getIntent();
         boolean existingUser = intent_fromCourse.getBooleanExtra("existingUser", false);
         if (existingUser == true){
             Toast.makeText(this, "User already exists! Try a different username.", Toast.LENGTH_SHORT).show();
         }
-
 
         // Set up the button to create the user account
         Button createAccountButton = findViewById(R.id.create_button);
@@ -47,7 +46,7 @@ public class CreateUserActivity extends AppCompatActivity {
                 if (isValidUsername(username) && isValidPassword(password) && isMatchedPassword(password, reEnterPassword)) {
 
                     // After creating the user account, we go directly to the SecondActivity
-                    Intent intent = new Intent(CreateUserActivity.this, SecondActivityCourse.class);
+                    Intent intent = new Intent(CreateUserActivity.this, CourseListActivity.class);
                     intent.putExtra("username", username); //Passing the entered credentials (Username and password) over to the SecondActivity
                     intent.putExtra("password", password);
                     intent.putExtra("viaCreateUser", true);
@@ -65,19 +64,15 @@ public class CreateUserActivity extends AppCompatActivity {
             }
         });
     }
-
     private boolean isValidUsername(String username) {
-        // Implement your own validation logic for the username
         return !username.isEmpty();
     }
 
     private boolean isValidPassword(String password) {
-        // Implement your own validation logic for the password
         return password.length() >= 8;
     }
 
     private boolean isMatchedPassword(String password, String reEnterPassword) {
-        // Implement your own validation logic for the re-entered password
         return password.equals(reEnterPassword);
     }
 }

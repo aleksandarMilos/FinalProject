@@ -81,7 +81,7 @@ public class GradeCalc extends AppCompatActivity {
         button_Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent home = new Intent(GradeCalc.this, SecondActivityCourse.class);
+                Intent home = new Intent(GradeCalc.this, CourseListActivity.class);
                 home.putExtra("username", username);
                 startActivity(home);
                 finish();

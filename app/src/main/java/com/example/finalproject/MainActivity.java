@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         rememberCheck = findViewById(R.id.checkBox);
         createUserBtn = findViewById(R.id.createNewUserBtn);
 
-
         spLoadData(); //Loading the shared-preferences which keeps track of our Username/password
 
         //TODO/Future work if too hard: Automatically logging the user out after a set amount of time the next time they open the app, e.g. 24 hours or a week
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_course = new Intent(MainActivity.this, SecondActivityCourse.class);
+                Intent intent_course = new Intent(MainActivity.this, CourseListActivity.class);
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 if (username.equals("")){
@@ -91,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent_create_user);
             }
         });
-
-
     }
 
     @Override
@@ -150,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         sp = getPreferences(MODE_PRIVATE);
         signedIn = sp.getBoolean("signedIn", false);
         if (signedIn == true){ //If SignedIn previously (but never signed out), then we can go to SecondActivity right away
-            Intent intent_course = new Intent(MainActivity.this, SecondActivityCourse.class);
+            Intent intent_course = new Intent(MainActivity.this, CourseListActivity.class);
             intent_course.putExtra("username", sp.getString("key_username", null));
             intent_course.putExtra("password", sp.getString("key_pass",null));
             intent_course.putExtra("vialogin", true);

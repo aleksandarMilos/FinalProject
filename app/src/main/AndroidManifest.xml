@@ -15,7 +15,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustNothing"/>
         <activity
-            android:name=".SecondActivityCourse"
+            android:name=".CourseListActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing"/>
         <activity
