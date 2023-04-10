@@ -14,13 +14,14 @@ public interface UserPassDAO {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     long insertData(UserPass userPass);
 
+    //This query is for when we create a User, checks if User already exists
+    @Query("SELECT CASE WHEN EXISTS(SELECT * FROM UserPass_table WHERE username == :username) THEN CAST (1 AS BIT) ELSE CAST (0 AS BIT) END")
+    boolean checkUser(String username);
+
     //Query used for checking if the Username + Password Login matches that of what's in the database.
     @Query("SELECT CASE WHEN EXISTS(SELECT * FROM UserPass_table WHERE username == :username AND password == :password) THEN CAST (1 AS BIT) ELSE CAST (0 AS BIT) END")
     boolean checkUserPass(String username, String password);
 
-    //This query is for when we create a User, checks if User already exists
-    @Query("SELECT CASE WHEN EXISTS(SELECT * FROM UserPass_table WHERE username == :username) THEN CAST (1 AS BIT) ELSE CAST (0 AS BIT) END")
-    boolean checkUser(String username);
 
 
     //TODO Futurework, implement these methods for say updating existing username/password, and deleting a User through the app itself

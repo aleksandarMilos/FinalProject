@@ -18,11 +18,9 @@ import androidx.room.PrimaryKey;
         )
 })
 public class Item {
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int _id;
-
     public int get_id() {
         return _id;
     }
@@ -46,8 +44,5 @@ public class Item {
 
     public void setUsName(String usName){ this.usName = usName; }
     public String getUsName(){ return this.usName; }
-
-
-
 
 }

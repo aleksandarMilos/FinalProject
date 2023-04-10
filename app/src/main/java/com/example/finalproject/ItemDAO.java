@@ -11,20 +11,16 @@ import java.util.List;
 
 @Dao
 public interface ItemDAO {
-
+    //Method for inserting the task into the database when we press the "ADD TASK" button
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertData(Item item);
 
-    @Query("SELECT * FROM item_table")
-    List<Item> getAllItem();
+    //Method to delete the task from the database when we long-click a task and press "Yes" to the confirmation dialog
+    @Delete
+    int deleteData(Item item);
 
-    //This Query is used to get us the already exisiting TodoList associated to a specific Course of a Specific user
+    //This Query is used to get us the already existing TodoList associated to a specific Course of a Specific user
     @Query("SELECT * FROM item_table WHERE usName = :username AND courseID = :courseID")
     List<Item> getAllTasksforUserCourse(String username, int courseID);
 
-    @Update
-    int updateData(Item item);
-
-    @Delete
-    int deleteData(Item item);
 }

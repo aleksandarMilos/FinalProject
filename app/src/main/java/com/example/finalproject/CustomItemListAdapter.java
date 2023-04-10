@@ -32,8 +32,6 @@ public class CustomItemListAdapter extends BaseAdapter {
         return position;
     }
 
-
-    //This is step 8 of https://www.androhub.com/room-database-android-jetpack-part-1/
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder = null;
         if (view == null) {

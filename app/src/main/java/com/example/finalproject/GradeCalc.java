@@ -20,20 +20,12 @@ public class GradeCalc extends AppCompatActivity {
     TextView displayGrade, finalGrade;
     ArrayList<Float> grades, weights;
 
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grade_calc);
 
-        setTitle("Grade Calculator");
-        Intent calculator = getIntent();
-        String username = calculator.getStringExtra("username");
-
-
-        grades = new ArrayList<>();
-        weights = new ArrayList<>();
         button_Add = findViewById(R.id.btn_add);
         button_ShowGrade = findViewById(R.id.btn_show);
         button_Home = findViewById(R.id.btn_Home);
@@ -42,6 +34,11 @@ public class GradeCalc extends AppCompatActivity {
         displayGrade = findViewById(R.id.grade_Dsiplayed);
         finalGrade = findViewById(R.id.finalMark);
 
+        grades = new ArrayList<>();
+        weights = new ArrayList<>();
+        setTitle("Grade Calculator");
+        Intent calculator = getIntent();
+        String username = calculator.getStringExtra("username");
         button_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +58,6 @@ public class GradeCalc extends AppCompatActivity {
                 weight.setText("");
             }
         });
-
         button_ShowGrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +73,6 @@ public class GradeCalc extends AppCompatActivity {
                 finalGrade.setText(s + "%");
             }
         });
-
         button_Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
